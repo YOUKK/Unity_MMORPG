@@ -5,33 +5,74 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float speed = 10.0f;
 
-    bool moveToDest = false;
     Vector3 destPos;
+
+    public enum PlayerState
+    {
+        Die,
+        Moving,
+        Idle,
+    }
+
+    private PlayerState state;
+
+    void UpdateDie()
+    {
+
+    }
+
+    void UpdateMoving()
+    {
+        // 捞悼 贸府
+        Vector3 dir = destPos - transform.position;
+        if (dir.magnitude < 0.0001f)
+        {
+            state = PlayerState.Idle;
+        }
+        else
+        {
+            float moveDist = Mathf.Clamp(speed * Time.deltaTime, 0, dir.magnitude);
+            transform.position += dir.normalized * moveDist;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
+        }
+
+        // 局聪皋捞记 贸府
+        Animator anim = GetComponent<Animator>();
+        anim.SetFloat("speed", speed);
+    }
+
+    void UpdateIdle()
+    {
+        // 局聪皋捞记 贸府
+        Animator anim = GetComponent<Animator>();
+        anim.SetFloat("speed", 0);
+    }
+
+
     void Start()
     {
-        Managers.Input.KeyAction -= OnKeyboard;
-        Managers.Input.KeyAction += OnKeyboard;
+        //Managers.Input.KeyAction -= OnKeyboard;
+        //Managers.Input.KeyAction += OnKeyboard;
 
         Managers.Input.MouseAction -= OnMouseClicked;
         Managers.Input.MouseAction += OnMouseClicked;
+
+        state = PlayerState.Idle;
     }
 
     void Update()
     {
-        if(moveToDest)
+        switch (state)
         {
-            Vector3 dir = destPos - transform.position;
-            if(dir.magnitude < 0.0001f)
-            {
-                moveToDest = false;
-            }
-            else
-            {
-                float moveDist = Mathf.Clamp(speed * Time.deltaTime, 0, dir.magnitude);
-                transform.position += dir.normalized * moveDist;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), 20 * Time.deltaTime);
-                //transform.LookAt(destPos);
-            }
+            case PlayerState.Die:
+                UpdateDie();
+                break;
+            case PlayerState.Moving:
+                UpdateMoving();
+                break;
+            case PlayerState.Idle:
+                UpdateIdle();
+                break;
         }
     }
 
@@ -57,13 +98,14 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.right), 0.2f);
             transform.position += Vector3.right * Time.deltaTime * speed;
         }
-
-        moveToDest = false;
     }
 
     void OnMouseClicked(Define.MouseEvent evt)
     {
-        if (evt != Define.MouseEvent.Click)
+        //if (evt != Define.MouseEvent.Click)
+        //    return;
+
+        if (state == PlayerState.Die)
             return;
 
         Debug.Log("OnMouseClicked");
@@ -77,8 +119,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100.0f, mask))
         {
             destPos = hit.point;
-            moveToDest = true;
-            Debug.Log($"Raycast Camera @ {hit.collider.gameObject.name}");
+            state = PlayerState.Moving;
         }
     }
 }
