@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
         Managers.Input.MouseAction += OnMouseClicked;
 
         state = PlayerState.Idle;
+
+        for (int i = 0; i < 8; i++)
+        {
+            UI_Button ui = Managers.UI.ShowPopupUI<UI_Button>();
+        }
     }
 
     void Update()
@@ -107,8 +112,6 @@ public class PlayerController : MonoBehaviour
 
         if (state == PlayerState.Die)
             return;
-
-        Debug.Log("OnMouseClicked");
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Debug.DrawRay(Camera.main.transform.position, ray.direction * 100.0f, Color.red, 1.0f);
