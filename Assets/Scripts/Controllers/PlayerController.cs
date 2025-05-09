@@ -58,11 +58,6 @@ public class PlayerController : MonoBehaviour
         Managers.Input.MouseAction += OnMouseClicked;
 
         state = PlayerState.Idle;
-
-        for (int i = 0; i < 8; i++)
-        {
-            UI_Button ui = Managers.UI.ShowPopupUI<UI_Button>();
-        }
     }
 
     void Update()

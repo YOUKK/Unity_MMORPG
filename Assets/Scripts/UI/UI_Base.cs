@@ -5,11 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Base : MonoBehaviour
+public abstract class UI_Base : MonoBehaviour
 {
     // 타입별로 오브젝트를 저장
     Dictionary<Type, UnityEngine.Object[]> _objects = new Dictionary<Type, UnityEngine.Object[]>();
-    
+
+    public abstract void Init();
+
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         // 1. 딕셔너리에 enum 요소 수만큼 빈 object 배열 넣어주기
@@ -39,23 +41,15 @@ public class UI_Base : MonoBehaviour
         return objects[idx] as T;
     }
 
-    protected TextMeshProUGUI GetText(int idx)
-    {
-        return Get<TextMeshProUGUI>(idx);
-    }
+    protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
+    protected TextMeshProUGUI GetText(int idx){ return Get<TextMeshProUGUI>(idx); }
 
-    protected Button GetButton(int idx)
-    {
-        return Get<Button>(idx);
-    }
+    protected Button GetButton(int idx){ return Get<Button>(idx); }
 
-    protected Image GetImage(int idx)
-    {
-        return Get<Image>(idx);
-    }
+    protected Image GetImage(int idx){ return Get<Image>(idx); }
 
     // 이벤트 Action에 함수 추가하는 기능
-    public static void AddUIEvnet(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
+    public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
 

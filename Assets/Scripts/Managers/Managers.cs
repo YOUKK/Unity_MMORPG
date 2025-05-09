@@ -5,13 +5,15 @@ public class Managers : MonoBehaviour
     static Managers instance;
     static Managers Instance { get{ Init(); return instance; } }
 
-    InputManager input = new InputManager();
-    ResourceManager resource = new ResourceManager();
-    UIManager ui = new UIManager();
+    InputManager _input = new InputManager();
+    ResourceManager _resource = new ResourceManager();
+    SceneManagerEx _sceneManager = new SceneManagerEx();
+    UIManager _ui = new UIManager();
 
-    public static InputManager Input { get { return Instance.input; } }
-    public static ResourceManager Resource { get { return Instance.resource; } }
-    public static UIManager UI { get { return Instance.ui; } }
+    public static InputManager Input { get { return Instance._input; } }
+    public static ResourceManager Resource { get { return Instance._resource; } }
+    public static SceneManagerEx Scene { get { return Instance._sceneManager; } }
+    public static UIManager UI { get { return Instance._ui; } }
 
     void Start()
     {
@@ -20,7 +22,7 @@ public class Managers : MonoBehaviour
 
     void Update()
     {
-        input.OnUpdate();
+        _input.OnUpdate();
     }
 
     static void Init()
