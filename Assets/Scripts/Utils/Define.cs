@@ -10,6 +10,13 @@ public class Define
         Game,
     }
 
+    public enum Sound
+    {
+        Bgm,
+        Effect,
+        MaxCount,
+    }
+
     public enum UIEvent
     {
         Click,
