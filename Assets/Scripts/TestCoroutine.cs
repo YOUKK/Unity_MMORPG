@@ -1,5 +1,4 @@
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 // 보통 게임에서는 공용으로 사용하는 타임 시스템이 있다.
