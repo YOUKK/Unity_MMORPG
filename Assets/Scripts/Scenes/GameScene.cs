@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameScene : BaseScene
 {
+
     // 오브젝트가 비활성화 되어있어도 호출되도록 awake에 작성
     void Awake()
     {
@@ -15,9 +17,6 @@ public class GameScene : BaseScene
         SceneType = Define.Scene.Game;
 
         Managers.UI.ShowScenepUI<UI_Inven>();
-
-        //for (int i = 0; i < 5; i++)
-        //    Managers.Resource.Instantiate("UnityChan");
     }
 
     public override void Clear()
