@@ -12,6 +12,12 @@ public abstract class UI_Base : MonoBehaviour
 
     public abstract void Init();
 
+    private void Start()
+    {
+        Init();
+    }
+
+
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         // 1. 딕셔너리에 enum 요소 수만큼 빈 object 배열 넣어주기
