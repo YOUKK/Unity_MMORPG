@@ -10,6 +10,8 @@ public abstract class BaseController : MonoBehaviour
     [SerializeField]
     protected Define.State _state;
 
+    public Define.WorldObject WorldObjectType { get; protected set; } = Define.WorldObject.Unknown;
+
     public virtual Define.State State // 프로퍼티도 virtual로 만들 수 있음!
     {
         get { return _state; }

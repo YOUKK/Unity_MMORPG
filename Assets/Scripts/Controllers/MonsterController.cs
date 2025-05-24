@@ -12,6 +12,7 @@ public class MonsterController : BaseController
 
     public override void Init()
     {
+        WorldObjectType = Define.WorldObject.Monster;
         _state = Define.State.Idle;
         _stat = GetComponent<Stat>();
 
@@ -21,11 +22,11 @@ public class MonsterController : BaseController
 
     protected override void UpdateIdle()
     {
-        Debug.Log("몬스터 idle");
-
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = Managers.Game.GetPlayer();
         if (player == null)
             return;
+
+
 
         float distance = (player.transform.position - transform.position).magnitude;
         if(distance <= _scanRange)
@@ -87,11 +88,9 @@ public class MonsterController : BaseController
         {
             // 체력 깎기
             Stat targetStat = _lockTarget.GetComponent<Stat>();
-            Stat myStat = gameObject.GetComponent<Stat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-            targetStat.HP -= damage;
+            targetStat.OnAttacked(_stat);
 
-            if(targetStat.HP > 0)
+            if (targetStat.HP > 0)
             {
                 float distance = (_lockTarget.transform.position - transform.position).magnitude;
                 if (distance <= _attackRange)

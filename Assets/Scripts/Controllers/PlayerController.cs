@@ -10,6 +10,7 @@ public class PlayerController : BaseController
 
     public override void Init()
     {
+        WorldObjectType = Define.WorldObject.Player;
         _state = Define.State.Idle;
         _stat = GetComponent<PlayerStat>();
 
@@ -39,6 +40,7 @@ public class PlayerController : BaseController
 
         // 이동 처리
         Vector3 dir = _destPos - transform.position;
+        dir.y = 0;
         if (dir.magnitude < 0.1f)
         {
             State = Define.State.Idle;
@@ -79,9 +81,7 @@ public class PlayerController : BaseController
         if(_lockTarget != null)
         {
             Stat targetStat = _lockTarget.GetComponent<Stat>();
-            Stat myStat = gameObject.GetComponent<PlayerStat>();
-            int damage = Mathf.Max(0, myStat.Attack - targetStat.Defense);
-            targetStat.HP -= damage;
+            targetStat.OnAttacked(_stat);
         }
 
         if(_stopSkill)
